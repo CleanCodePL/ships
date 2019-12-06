@@ -11,6 +11,14 @@ public class Ship {
         this.position = position;
     }
 
+    public Set<Point> getPosition() {
+        return position;
+    }
+
+    public void translate(Point point) {
+        this.getPosition().forEach(shipPoint -> shipPoint.translate(point));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
