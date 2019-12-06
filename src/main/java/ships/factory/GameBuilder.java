@@ -1,5 +1,6 @@
 package ships.factory;
 
+import ships.controller.GameInterface;
 import ships.domain.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class GameBuilder {
     private int height;
     private int width;
     private List<ShipType> ships = new ArrayList<>();
+    private GameInterface gameInterface;
 
     public GameBuilder withBoardSize(int width, int height) {
         this.height = height;
@@ -25,13 +27,18 @@ public class GameBuilder {
         return this;
     }
 
+    public GameBuilder withGameInterface(GameInterface gameInterface) {
+        this.gameInterface = gameInterface;
+        return this;
+    }
+
     public Game build() {
         List<Ship> ships = buildShips();
         Board board = new Board(width, height);
 
         locateShipsOnBoard(ships, board);
 
-        return new Game(board);
+        return new Game(board, gameInterface);
     }
 
     private void locateShipsOnBoard(List<Ship> ships, Board board) {

@@ -1,5 +1,6 @@
 package ships;
 
+import ships.controller.impl.ConsoleGameInterface;
 import ships.domain.Orientation;
 import ships.factory.GameBuilder;
 
@@ -16,6 +17,7 @@ public class GameBoot {
                 .withShip(3, Orientation.HORIZONTAL)
                 .withShip(3, Orientation.VERTICAL)
                 .withShip(4, Orientation.HORIZONTAL)
+                .withGameInterface(new ConsoleGameInterface())
                 .build()
                 .run();
 
