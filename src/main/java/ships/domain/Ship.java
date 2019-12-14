@@ -11,7 +11,7 @@ public class Ship {
         this.position = position;
     }
 
-    Set<Point> getPosition() {
+    public Set<Point> getPosition() {
         return position;
     }
 

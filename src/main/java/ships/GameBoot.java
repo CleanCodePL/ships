@@ -1,6 +1,6 @@
 package ships;
 
-import ships.controller.impl.ConsoleGameInterface;
+import ships.controller.impl.console.ConsoleGameInterface;
 import ships.domain.Orientation;
 import ships.factory.GameBuilder;
 

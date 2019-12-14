@@ -13,9 +13,13 @@ public class Game {
     }
 
     public void run() {
-        boolean gameIsActive = true;
-        while (gameIsActive) {
+        long startTime = System.currentTimeMillis();
+        while (!this.board.allShipsSunk()) {
             gameInterface.drawBoard(this.board);
+            Point shoot = gameInterface.shoot();
+            this.board.shoot(shoot);
         }
+        long gameDuration = System.currentTimeMillis() - startTime;
+        gameInterface.statistics(gameDuration, this.board.countShoots());
     }
 }

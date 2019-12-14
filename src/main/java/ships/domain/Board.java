@@ -22,6 +22,10 @@ public class Board {
     }
 
     public void addShip(Ship ship) {
+        if (!ship.getPosition().stream().allMatch(this::belongsToBoard)) {
+            throw new IllegalStateException("Ship must be placed on the map!");
+        }
+
         if (!this.ships.add(ship)) {
             throw new IllegalStateException("Cannot locate two ships in this same place!");
         }
@@ -46,18 +50,63 @@ public class Board {
     private boolean canBeLocatedInPlace(Point point, Ship ship, final Set<Point> reservedPoints) {
         return ship.getPosition()
                 .stream()
-                .noneMatch(shipPoint -> {
+                .allMatch(shipPoint -> {
                     Point checkedPoint = point.add(shipPoint);
-                    return reservedPoints.contains(checkedPoint) && isPointInBoard(checkedPoint);
+                    return !reservedPoints.contains(checkedPoint) && belongsToBoard(checkedPoint);
                 });
-    }
-
-    private boolean isPointInBoard(Point checkedPoint) {
-        return checkedPoint.getX() < width && checkedPoint.getY() < height;
     }
 
     private Set<Point> shipPoints() {
         return this.ships.stream().flatMap(ship -> ship.getPosition().stream()).collect(Collectors.toSet());
     }
 
+    void shoot(Point point) {
+        this.shootedPoints.add(point);
+    }
+
+    boolean allShipsSunk() {
+        Set<Point> shipPoints = shipPoints();
+        return this.shootedPoints.containsAll(shipPoints);
+    }
+
+    public Set<Ship> sunkenShips() {
+        return this.ships.stream()
+                .filter(ship -> this.shootedPoints.containsAll(ship.getPosition()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Point> hitShoots() {
+        Set<Ship> sunkenShips = sunkenShips();
+        return this.ships.stream()
+                .filter(ship -> !sunkenShips.contains(ship))
+                .flatMap(ship -> ship.getPosition().stream())
+                .filter(shipPoint -> this.shootedPoints.contains(shipPoint))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Point> missedShoots() {
+        Set<Point> hitShoots = hitShoots();
+        return this.shootedPoints.stream()
+                .filter(point -> !hitShoots.contains(point))
+                .collect(Collectors.toSet());
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    private boolean belongsToBoard(Point point) {
+        return point.getX() < width &&
+                point.getY() < height &&
+                point.getX() >= 0 &&
+                point.getY() >= 0;
+    }
+
+    int countShoots() {
+        return this.shootedPoints.size();
+    }
 }
