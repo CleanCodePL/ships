@@ -20,6 +20,6 @@ public class Game {
             this.board.shoot(shoot);
         }
         long gameDuration = System.currentTimeMillis() - startTime;
-        gameInterface.statistics(gameDuration, this.board.countShoots());
+        gameInterface.showStatistics(gameDuration, this.board.countShoots());
     }
 }

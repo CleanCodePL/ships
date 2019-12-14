@@ -20,7 +20,7 @@ public class ConsoleGameInterface implements GameInterface {
                 .flatMap(ship -> ship.getPosition().stream())
                 .collect(Collectors.toSet());
 
-        PointType[][] markedBoard = emptyBoard(board.getWidth(), board.getHeight());
+        PointType[][] markedBoard = prepareEmptyBoard(board.getWidth(), board.getHeight());
         fillWithPoints(markedBoard, board.getHitPoints(), PointType.HIT);
         fillWithPoints(markedBoard, board.getMissedShoots(), PointType.MISSED);
         fillWithPoints(markedBoard, sunkenShips, PointType.SUNK);
@@ -53,7 +53,7 @@ public class ConsoleGameInterface implements GameInterface {
         return boardBuilder.toString();
     }
 
-    private PointType[][] emptyBoard(int width, int height) {
+    private PointType[][] prepareEmptyBoard(int width, int height) {
         PointType[][] markedBoard = new PointType[height][width];
         for (PointType[] row : markedBoard) {
             Arrays.fill(row, PointType.EMPTY);
@@ -70,9 +70,15 @@ public class ConsoleGameInterface implements GameInterface {
     }
 
     @Override
-    public void statistics(long gameDuration, int countShoots) {
+    public void showStatistics(long gameDuration, int countShoots) {
         System.out.println("|---------------- Statistics ------------------|");
         System.out.println("Game duration: " + gameDuration / 1000 + "s");
         System.out.println("Shoots: " + countShoots);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        in.close();
+        super.finalize();
     }
 }

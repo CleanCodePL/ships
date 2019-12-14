@@ -9,5 +9,5 @@ public interface GameInterface {
 
     Point shoot();
 
-    void statistics(long gameDuration, int countShoots);
+    void showStatistics(long gameDuration, int countShoots);
 }

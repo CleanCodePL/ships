@@ -79,9 +79,11 @@ public class Board {
     public Set<Point> getHitPoints() {
         Set<Ship> sunkenShips = getSunkenShips();
 
-        Stream<Point> unsunkenShips = this.ships.stream().filter(ship -> !sunkenShips.contains(ship)).flatMap(ship -> ship.getPosition().stream());
-        Set<Point> points = unsunkenShips.filter(shipPoint -> this.shootedPoints.contains(shipPoint)).collect(Collectors.toSet());
-        return points;
+        Stream<Point> unsunkenShips = this.ships.stream()
+                .filter(ship -> !sunkenShips.contains(ship))
+                .flatMap(ship -> ship.getPosition().stream());
+        return unsunkenShips.filter(shipPoint -> this.shootedPoints.contains(shipPoint))
+                .collect(Collectors.toSet());
     }
 
     public Set<Point> getMissedShoots() {
