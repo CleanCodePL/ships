@@ -16,13 +16,13 @@ public class ConsoleGameInterface implements GameInterface {
 
     @Override
     public void drawBoard(Board board) {
-        Set<Point> sunkenShips = board.sunkenShips().stream()
+        Set<Point> sunkenShips = board.getSunkenShips().stream()
                 .flatMap(ship -> ship.getPosition().stream())
                 .collect(Collectors.toSet());
 
         PointType[][] markedBoard = emptyBoard(board.getWidth(), board.getHeight());
-        fillWithPoints(markedBoard, board.hitShoots(), PointType.HIT);
-        fillWithPoints(markedBoard, board.missedShoots(), PointType.MISSED);
+        fillWithPoints(markedBoard, board.getHitPoints(), PointType.HIT);
+        fillWithPoints(markedBoard, board.getMissedShoots(), PointType.MISSED);
         fillWithPoints(markedBoard, sunkenShips, PointType.SUNK);
 
         System.out.println(boardToString(markedBoard));

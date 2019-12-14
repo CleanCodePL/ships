@@ -3,6 +3,7 @@ package ships.domain;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Board {
 
@@ -22,7 +23,7 @@ public class Board {
     }
 
     public void addShip(Ship ship) {
-        if (!ship.getPosition().stream().allMatch(this::belongsToBoard)) {
+        if (!ship.getPosition().stream().allMatch(this::isPointBelongsToBoard)) {
             throw new IllegalStateException("Ship must be placed on the map!");
         }
 
@@ -32,7 +33,7 @@ public class Board {
     }
 
     public Set<Point> findPlaceForShip(Ship ship) {
-        final Set<Point> reservedPoints = shipPoints();
+        final Set<Point> reservedPoints = getShipPoints();
         Set<Point> availablePoints = new HashSet<>();
 
         for (int w = 0; w < width; w++) {
@@ -52,11 +53,11 @@ public class Board {
                 .stream()
                 .allMatch(shipPoint -> {
                     Point checkedPoint = point.add(shipPoint);
-                    return !reservedPoints.contains(checkedPoint) && belongsToBoard(checkedPoint);
+                    return !reservedPoints.contains(checkedPoint) && isPointBelongsToBoard(checkedPoint);
                 });
     }
 
-    private Set<Point> shipPoints() {
+    private Set<Point> getShipPoints() {
         return this.ships.stream().flatMap(ship -> ship.getPosition().stream()).collect(Collectors.toSet());
     }
 
@@ -65,27 +66,26 @@ public class Board {
     }
 
     boolean allShipsSunk() {
-        Set<Point> shipPoints = shipPoints();
+        Set<Point> shipPoints = getShipPoints();
         return this.shootedPoints.containsAll(shipPoints);
     }
 
-    public Set<Ship> sunkenShips() {
+    public Set<Ship> getSunkenShips() {
         return this.ships.stream()
                 .filter(ship -> this.shootedPoints.containsAll(ship.getPosition()))
                 .collect(Collectors.toSet());
     }
 
-    public Set<Point> hitShoots() {
-        Set<Ship> sunkenShips = sunkenShips();
-        return this.ships.stream()
-                .filter(ship -> !sunkenShips.contains(ship))
-                .flatMap(ship -> ship.getPosition().stream())
-                .filter(shipPoint -> this.shootedPoints.contains(shipPoint))
-                .collect(Collectors.toSet());
+    public Set<Point> getHitPoints() {
+        Set<Ship> sunkenShips = getSunkenShips();
+
+        Stream<Point> unsunkenShips = this.ships.stream().filter(ship -> !sunkenShips.contains(ship)).flatMap(ship -> ship.getPosition().stream());
+        Set<Point> points = unsunkenShips.filter(shipPoint -> this.shootedPoints.contains(shipPoint)).collect(Collectors.toSet());
+        return points;
     }
 
-    public Set<Point> missedShoots() {
-        Set<Point> hitShoots = hitShoots();
+    public Set<Point> getMissedShoots() {
+        Set<Point> hitShoots = getHitPoints();
         return this.shootedPoints.stream()
                 .filter(point -> !hitShoots.contains(point))
                 .collect(Collectors.toSet());
@@ -99,7 +99,7 @@ public class Board {
         return height;
     }
 
-    private boolean belongsToBoard(Point point) {
+    private boolean isPointBelongsToBoard(Point point) {
         return point.getX() < width &&
                 point.getY() < height &&
                 point.getX() >= 0 &&

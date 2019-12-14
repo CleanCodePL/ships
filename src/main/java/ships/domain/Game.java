@@ -12,7 +12,7 @@ public class Game {
         this.gameInterface = gameInterface;
     }
 
-    public void run() {
+    public void start() {
         long startTime = System.currentTimeMillis();
         while (!this.board.allShipsSunk()) {
             gameInterface.drawBoard(this.board);

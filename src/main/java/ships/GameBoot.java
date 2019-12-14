@@ -19,7 +19,7 @@ public class GameBoot {
                 .withShip(4, Orientation.HORIZONTAL)
                 .withGameInterface(new ConsoleGameInterface())
                 .build()
-                .run();
+                .start();
 
     }
 

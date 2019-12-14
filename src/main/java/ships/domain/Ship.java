@@ -21,8 +21,12 @@ public class Ship {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)  {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Ship ship = (Ship) o;
         return Objects.equals(position, ship.position);
     }
