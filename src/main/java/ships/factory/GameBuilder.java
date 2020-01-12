@@ -33,6 +33,10 @@ public class GameBuilder {
     }
 
     public Game build() {
+        if (this.gameInterface == null) {
+            throw new IllegalStateException("Cannot build game without interface!");
+        }
+
         List<Ship> ships = buildShips();
         Board board = new Board(width, height);
 
@@ -55,28 +59,6 @@ public class GameBuilder {
 
     private List<Ship> buildShips() {
         return this.ships.stream().map(ShipFactory::createShip).collect(Collectors.toList());
-    }
-
-    static class ShipType {
-        private final int size;
-        private final Orientation orientation;
-
-        ShipType(int size, Orientation orientation) {
-            if (size < 1) {
-                throw new IllegalArgumentException("Size can not be smaller than 1");
-            }
-
-            this.size = size;
-            this.orientation = orientation;
-        }
-
-        int getSize() {
-            return size;
-        }
-
-        Orientation getOrientation() {
-            return orientation;
-        }
     }
 
 }

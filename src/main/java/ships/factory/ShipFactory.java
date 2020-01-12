@@ -7,9 +7,9 @@ import ships.domain.Ship;
 import java.util.HashSet;
 import java.util.Set;
 
-class ShipFactory {
+public class ShipFactory {
 
-    static Ship createShip(GameBuilder.ShipType type) {
+    public static Ship createShip(ShipType type) {
         Set<Point> points = new HashSet<>();
 
         for (int i = 0; i < type.getSize(); i++) {

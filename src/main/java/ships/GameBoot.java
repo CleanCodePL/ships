@@ -20,7 +20,6 @@ public class GameBoot {
                 .withGameInterface(new ConsoleGameInterface())
                 .build()
                 .start();
-
     }
 
 }

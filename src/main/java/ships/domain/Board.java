@@ -88,8 +88,12 @@ public class Board {
 
     public Set<Point> getMissedShoots() {
         Set<Point> hitShoots = getHitPoints();
+        Set<Point> sunkenShips = getSunkenShips().stream()
+                .flatMap(ship -> ship.getPosition().stream())
+                .collect(Collectors.toSet());
+
         return this.shootedPoints.stream()
-                .filter(point -> !hitShoots.contains(point))
+                .filter(point -> !hitShoots.contains(point) && !sunkenShips.contains(point))
                 .collect(Collectors.toSet());
     }
 
@@ -102,8 +106,8 @@ public class Board {
     }
 
     private boolean isPointBelongsToBoard(Point point) {
-        return point.getX() < width &&
-                point.getY() < height &&
+        return point.getX() < this.getWidth() &&
+                point.getY() < this.getHeight() &&
                 point.getX() >= 0 &&
                 point.getY() >= 0;
     }
