@@ -11,7 +11,6 @@ public class DummyGameInterface implements GameInterface {
     private int lastX = 0;
     private int lastY = 0;
 
-
     public DummyGameInterface() {
         this.height = 0;
         this.width = 0;

@@ -12,6 +12,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
+        <sonar.projectKey>CleanCodePL_ships</sonar.projectKey>
+        <sonar.organization>cleancodepl</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>744254b1af3e3f80bd0c0a52b2f2ecaf374ffc3b</sonar.login>
     </properties>
 
     <developers>
