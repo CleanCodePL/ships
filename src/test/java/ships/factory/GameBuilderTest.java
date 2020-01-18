@@ -2,7 +2,6 @@ package ships.factory;
 
 import org.junit.jupiter.api.Test;
 import ships.controller.DummyGameInterface;
-import ships.domain.Game;
 import ships.domain.Orientation;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

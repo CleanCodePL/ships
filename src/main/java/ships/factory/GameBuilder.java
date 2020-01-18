@@ -13,7 +13,7 @@ public class GameBuilder {
 
     private int height;
     private int width;
-    private List<ShipType> ships = new ArrayList<>();
+    private List<ShipType> shipTypes = new ArrayList<>();
     private GameInterface gameInterface;
 
     public GameBuilder withBoardSize(int width, int height) {
@@ -23,7 +23,7 @@ public class GameBuilder {
     }
 
     public GameBuilder withShip(int size, Orientation orientation) {
-        this.ships.add(new ShipType(size, orientation));
+        this.shipTypes.add(new ShipType(size, orientation));
         return this;
     }
 
@@ -58,7 +58,7 @@ public class GameBuilder {
     }
 
     private List<Ship> buildShips() {
-        return this.ships.stream().map(ShipFactory::createShip).collect(Collectors.toList());
+        return this.shipTypes.stream().map(ShipFactory::createShip).collect(Collectors.toList());
     }
 
 }

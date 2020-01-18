@@ -9,6 +9,9 @@ import java.util.Set;
 
 public class ShipFactory {
 
+    private ShipFactory() {
+    }
+
     public static Ship createShip(ShipType type) {
         Set<Point> points = new HashSet<>();
 

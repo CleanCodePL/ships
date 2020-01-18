@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 
 public class ConsoleGameInterface implements GameInterface {
 
-    private Scanner in = new Scanner(System.in);
-
     @Override
     public void drawBoard(Board board) {
         Set<Point> sunkenShips = board.getSunkenShips().stream()
@@ -29,9 +27,7 @@ public class ConsoleGameInterface implements GameInterface {
     }
 
     private void fillWithPoints(PointType[][] board, Set<Point> points, PointType type) {
-        points.forEach(point -> {
-            Array.set(board[point.getY()], point.getX(), type);
-        });
+        points.forEach(point -> Array.set(board[point.getY()], point.getX(), type));
     }
 
     private String boardToString(PointType[][] board) {
@@ -63,9 +59,11 @@ public class ConsoleGameInterface implements GameInterface {
 
     @Override
     public Point shoot() {
+        Scanner in = new Scanner(System.in);
         System.out.print("Coordinates: ");
         int y = in.next().toUpperCase().charAt(0) - 'A';
         int x = in.nextInt() - 1;
+        in.close();
         return new Point(x, y);
     }
 
@@ -74,11 +72,5 @@ public class ConsoleGameInterface implements GameInterface {
         System.out.println("|---------------- Statistics ------------------|");
         System.out.println("Game duration: " + gameDuration / 1000 + "s");
         System.out.println("Shoots: " + countShoots);
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        in.close();
-        super.finalize();
     }
 }
